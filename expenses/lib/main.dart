@@ -8,6 +8,7 @@ void main() => runApp(ExpensesApp());
 class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("111");
     return MaterialApp(
       home: MyHomePage(),
     );
