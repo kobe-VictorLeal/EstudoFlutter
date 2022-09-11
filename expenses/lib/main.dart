@@ -9,11 +9,30 @@ void main() => runApp(ExpensesApp());
 class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("111");
+    final ThemeData theme = ThemeData();
+
     return MaterialApp(
       home: MyHomePage(),
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: Colors.purple,
+          secondary: Colors.amber,
+        ),
+        textTheme: theme.textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        appBarTheme: theme.appBarTheme.copyWith(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
