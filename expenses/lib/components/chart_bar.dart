@@ -5,7 +5,7 @@ class ChartBar extends StatelessWidget {
   final double value;
   final double percentage;
 
-  ChartBar({
+  const ChartBar({
     required this.day,
     required this.value,
     required this.percentage,
@@ -21,7 +21,7 @@ class ChartBar extends StatelessWidget {
             child: Text("${value.toStringAsFixed(2)}"),
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Container(
           height: 60,
           width: 10,

@@ -1,7 +1,7 @@
+import 'package:expenses/components/transanction_cell.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
-import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -35,37 +35,7 @@ class TransactionList extends StatelessWidget {
               itemCount: transactions.length,
               itemBuilder: (ctx, index) {
                 final transaction = transactions[index];
-                return Card(
-                  elevation: 5,
-                  margin: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 15,
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      radius: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: FittedBox(
-                          child: Text("R\$${transaction.value}"),
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      transaction.title,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    subtitle: Text(
-                      DateFormat("d MMM y").format(transaction.date),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).colorScheme.error,
-                      onPressed: () => onRemove(transaction.id),
-                    ),
-                  ),
-                );
+                return TransactionCell(transaction, onRemove);
               },
             ),
     );
