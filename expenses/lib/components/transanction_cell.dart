@@ -34,11 +34,18 @@ class TransactionCell extends StatelessWidget {
         subtitle: Text(
           DateFormat("d MMM y").format(transaction.date),
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          color: Theme.of(context).colorScheme.error,
-          onPressed: () => onRemove(transaction.id),
-        ),
+        trailing: MediaQuery.of(context).size.width > 400
+            ? FlatButton.icon(
+                onPressed: () => onRemove(transaction.id),
+                icon: const Icon(Icons.delete),
+                label: const Text("Excuir"),
+                textColor: Theme.of(context).errorColor,
+              )
+            : IconButton(
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).colorScheme.error,
+                onPressed: () => onRemove(transaction.id),
+              ),
       ),
     );
   }
