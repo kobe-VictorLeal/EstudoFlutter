@@ -155,23 +155,26 @@ class _MyHomePageState extends State<MyHomePage> {
       )
     ];
 
-    final PreferredSizeWidget appBar = //Platform.isIOS ?
-        // CupertinoNavigationBar(
-        //   middle: Text('Despesas Pessoais'),
-        //           trailing: Row(
-        //             mainAxisSize: MainAxisSize.min,
-        //             children: actions,
-        //           ),
-        //         ),
-        AppBar(
-      title: Text(
-        "Gastos da Semana",
-        style: TextStyle(
-          fontSize: 20 * mediaQuery.textScaleFactor,
+    final PreferredSizeWidget appBar;
+    if (Platform.isIOS) {
+      appBar = CupertinoNavigationBar(
+        middle: Text('Despesas Pessoais'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: actions,
         ),
-      ),
-      actions: actions,
-    );
+      );
+    } else {
+      appBar = AppBar(
+        title: Text(
+          "Gastos da Semana",
+          style: TextStyle(
+            fontSize: 20 * mediaQuery.textScaleFactor,
+          ),
+        ),
+        actions: actions,
+      );
+    }
 
     final availableHeight = MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
     final bodyPage = SingleChildScrollView(
@@ -208,53 +211,59 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    return //Platform.isIOS
-        // ? CupertinoPageScaffold(
-        //     navigationBar: appBar,
-        //     child: bodyPage,
-        //   )
-        Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (_isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return Platform.isIOS && false
+        ? CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: Text('Despesas Pessoais'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: actions,
+              ),
+            ),
+            child: bodyPage,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text("Exibir Gráfico"),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).accentColor,
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
+                  if (_isLandscape)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Exibir Gráfico"),
+                        Switch.adaptive(
+                          activeColor: Theme.of(context).accentColor,
+                          value: _showChart,
+                          onChanged: (value) {
+                            setState(() {
+                              _showChart = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  if (_showChart || !_isLandscape)
+                    Container(
+                      height: availableHeight * (_isLandscape ? 0.7 : 0.3),
+                      child: Chart(_recentTransactions),
+                    ),
+                  if (!_showChart || !_isLandscape)
+                    Container(
+                      height: availableHeight * (_isLandscape ? 1 : 0.7),
+                      child: TransactionList(_transactions, _removeTransaction),
+                    ),
                 ],
               ),
-            if (_showChart || !_isLandscape)
-              Container(
-                height: availableHeight * (_isLandscape ? 0.7 : 0.3),
-                child: Chart(_recentTransactions),
-              ),
-            if (!_showChart || !_isLandscape)
-              Container(
-                height: availableHeight * (_isLandscape ? 1 : 0.7),
-                child: TransactionList(_transactions, _removeTransaction),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => _openTransactionFormModal(context),
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _openTransactionFormModal(context),
+                  ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
